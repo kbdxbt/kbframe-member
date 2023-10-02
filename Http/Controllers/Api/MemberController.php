@@ -11,23 +11,11 @@ use Modules\Member\Models\Member;
 class MemberController extends BaseController
 {
     /**
-     * @var MemberRequest
-     */
-    private $request;
-
-    public function __construct(MemberRequest $request)
-    {
-        $this->request = $request;
-    }
-
-    /**
      * 用户信息
-     *
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Resources\Json\JsonResource
      */
-    public function info()
+    public function info(MemberRequest $request)
     {
-        $uid = $this->request->userId();
+        $uid = $request->userId();
         $data = Member::query()->find($uid);
 
         return $this->success(MemberResource::make($data));
@@ -36,12 +24,12 @@ class MemberController extends BaseController
     /**
      * 修改密码
      */
-    public function updatePassword()
+    public function updatePassword(MemberRequest $request)
     {
-        $params = $this->request->validated();
+        $params = $request->validated();
 
-        $uid = $this->request->userId();
-        $member = Member::query()->firstWhere([['id' => $uid], ['status' => StatusEnum::ENABLED]]);
+        $uid = $request->userId();
+        $member = Member::query()->where(['id' => $uid, 'status' => StatusEnum::ENABLED->value])->first();
 
         if (! $member) {
             return $this->fail('获取账号信息失败');

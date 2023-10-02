@@ -1,11 +1,11 @@
 {
-    "name": "Common",
-    "alias": "common",
+    "name": "Member",
+    "alias": "member",
     "description": "",
     "keywords": [],
     "priority": 1,
     "providers": [
-        "Modules\\Common\\Providers\\CommonServiceProvider"
+        "Modules\\Member\\Providers\\MemberServiceProvider"
     ],
     "files": [
         "helpers.php"

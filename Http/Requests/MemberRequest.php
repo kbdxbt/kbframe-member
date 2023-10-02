@@ -6,12 +6,12 @@ use Modules\Core\Http\Requests\BaseRequest;
 
 class MemberRequest extends BaseRequest
 {
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
-    public function updatePasswordRules()
+    public function updatePasswordRules(): array
     {
         return [
             'old_password' => ['required'],

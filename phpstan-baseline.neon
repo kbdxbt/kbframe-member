@@ -1,0 +1,36 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Auth\\\\Factory\\|Illuminate\\\\Contracts\\\\Auth\\\\Guard\\:\\:logout\\(\\)\\.$#"
+			count: 1
+			path: Http/Controllers/Api/AuthController.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Auth\\\\Factory\\|Illuminate\\\\Contracts\\\\Auth\\\\Guard\\:\\:refresh\\(\\)\\.$#"
+			count: 1
+			path: Http/Controllers/Api/AuthController.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Auth\\\\Factory\\|Illuminate\\\\Contracts\\\\Auth\\\\Guard\\:\\:setTTL\\(\\)\\.$#"
+			count: 2
+			path: Http/Controllers/Api/AuthController.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: Http/Controllers/Api/AuthController.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Auth\\\\Factory\\|Illuminate\\\\Contracts\\\\Auth\\\\Guard\\:\\:logout\\(\\)\\.$#"
+			count: 1
+			path: Http/Controllers/Api/MemberController.php
+
+		-
+			message: "#^Call to an undefined method Modules\\\\Member\\\\Http\\\\Requests\\\\MemberRequest\\:\\:userId\\(\\)\\.$#"
+			count: 2
+			path: Http/Controllers/Api/MemberController.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Auth\\\\Factory\\|Illuminate\\\\Contracts\\\\Auth\\\\Guard\\:\\:factory\\(\\)\\.$#"
+			count: 1
+			path: Models/Member.php

@@ -58,7 +58,7 @@ class Member extends User implements JWTSubject
         return [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
+            'expires_in' => auth('member')->factory()->getTTL() * 60,
         ];
     }
 }

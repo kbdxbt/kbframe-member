@@ -16,7 +16,7 @@ class SendCodeService
         $this->cachePrefix = 'verify_code:';
     }
 
-    public function generate($length = 6, $ttl = 600)
+    public function generate($length = 6, $ttl = 600): string
     {
         $code = $this->generateCode($length);
 
@@ -34,7 +34,7 @@ class SendCodeService
         return $this->getCache()->get($this->getCacheKey());
     }
 
-    public function throwIfLimit()
+    public function throwIfLimit(): static
     {
         if ($limiter = RateLimiter::tooManyAttempts($this->getCacheKey(), 1)) {
             throw new ThrottleRequestsException('发送验证码过于频繁');
@@ -45,7 +45,7 @@ class SendCodeService
         return $this;
     }
 
-    public function check($code, $is_clear = false)
+    public function check($code, $is_clear = false): bool
     {
         if ($code !== $this->get()) {
             return false;
@@ -63,7 +63,7 @@ class SendCodeService
         $this->getCache()->forget($this->getCacheKey());
     }
 
-    protected function generateCode($length)
+    protected function generateCode($length): string
     {
         return generate_random('numeric', $length);
     }

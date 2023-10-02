@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Modules\Common\Tests;
+namespace Modules\Member\Tests;
 
 uses(TestCase::class)
     ->beforeAll(function (): void {
