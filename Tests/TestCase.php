@@ -4,11 +4,11 @@ namespace Modules\Member\Tests;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Jiannei\Response\Laravel\Providers\LaravelServiceProvider;
 use Modules\Common\Providers\CommonServiceProvider;
-use Modules\Core\Providers\CoreServiceProvider;
 use Modules\Member\Http\Controllers\Api\AuthController;
 use Modules\Member\Http\Controllers\Api\MemberController;
 use Modules\Member\Providers\MemberServiceProvider;
@@ -17,10 +17,22 @@ use PHPOpenSourceSaver\JWTAuth\Providers\LaravelServiceProvider as JwtServicePro
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
+    protected $modulePath = __DIR__.'/Modules/';
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->setUpDatabase();
+    }
+
+    protected function tearDown(): void
+    {
+        if (is_dir($this->modulePath.'kbframe-test')) {
+            @rmdir($this->modulePath.'kbframe-test');
+        }
+        if (is_dir($this->modulePath)) {
+            File::deleteDirectory($this->modulePath);
+        }
     }
 
     protected function setUpDatabase(): void
@@ -60,7 +72,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         return [
             LaravelModulesServiceProvider::class,
             CommonServiceProvider::class,
-            CoreServiceProvider::class,
             MemberServiceProvider::class,
             LaravelServiceProvider::class,
             JwtServiceProvider::class,
@@ -90,7 +101,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'model' => \Modules\Member\Models\Member::class,
         ]);
 
-        $app['config']->set('modules.paths.modules', __DIR__.'/../../');
+        $this->registerTestModulePath($app);
     }
 
     protected function defineRoutes($router): void
@@ -114,5 +125,19 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
                 });
 
         });
+    }
+
+    protected function registerTestModulePath($app): void
+    {
+        $modulePath = __DIR__.'/Modules/';
+        if (! is_dir($modulePath)) {
+            File::makeDirectory(path: $modulePath);
+        }
+        if (! is_dir($modulePath.'kbframe-test')) {
+            File::link(__DIR__.'/../', $modulePath.'kbframe-test');
+        }
+
+        $app['config']->set('modules.scan.enabled', true);
+        $app['config']->set('modules.scan.paths', [__DIR__.'/../vendor/kbdxbt/*', __DIR__.'/../Tests/Modules/*']);
     }
 }
