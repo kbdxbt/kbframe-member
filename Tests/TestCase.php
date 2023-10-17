@@ -23,16 +23,12 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     {
         parent::setUp();
         $this->setUpDatabase();
+        $this->clearTestModulePath();
     }
 
     protected function tearDown(): void
     {
-        if (is_dir($this->modulePath.'kbframe-test')) {
-            @rmdir($this->modulePath.'kbframe-test');
-        }
-        if (is_dir($this->modulePath)) {
-            File::deleteDirectory($this->modulePath);
-        }
+        $this->clearTestModulePath();
     }
 
     protected function setUpDatabase(): void
@@ -129,15 +125,24 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function registerTestModulePath($app): void
     {
-        $modulePath = __DIR__.'/Modules/';
-        if (! is_dir($modulePath)) {
-            File::makeDirectory(path: $modulePath);
+        if (! is_dir($this->modulePath)) {
+            File::makeDirectory(path: $this->modulePath);
         }
-        if (! is_dir($modulePath.'kbframe-test')) {
-            File::link(__DIR__.'/../', $modulePath.'kbframe-test');
+        if (! is_dir($this->modulePath.'kbframe-test')) {
+            File::link(__DIR__.'/../', $this->modulePath.'kbframe-test');
         }
 
         $app['config']->set('modules.scan.enabled', true);
         $app['config']->set('modules.scan.paths', [__DIR__.'/../vendor/kbdxbt/*', __DIR__.'/../Tests/Modules/*']);
+    }
+
+    protected function clearTestModulePath(): void
+    {
+        if (is_dir($this->modulePath.'kbframe-test')) {
+            @rmdir($this->modulePath.'kbframe-test');
+        }
+        if (is_dir($this->modulePath)) {
+            File::deleteDirectory($this->modulePath);
+        }
     }
 }

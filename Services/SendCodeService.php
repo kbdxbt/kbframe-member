@@ -4,6 +4,7 @@ namespace Modules\Member\Services;
 
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Support\Facades\RateLimiter;
+use Modules\Common\Exceptions\BadRequestException;
 use Modules\Common\Support\Traits\Cacheable;
 
 class SendCodeService
@@ -23,7 +24,7 @@ class SendCodeService
         $this->getCache()->put($this->getCacheKey(), $code, $ttl);
 
         if (! $this->getCache()->has($this->getCacheKey())) {
-            throw new \RuntimeException('Failed to cache code.');
+            throw new BadRequestException('生成验证码错误');
         }
 
         return $code;
