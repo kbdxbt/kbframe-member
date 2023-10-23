@@ -3,14 +3,20 @@
 namespace Modules\Member\Providers;
 
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\ServiceProvider;
 use Modules\Member\Services\SendCodeService;
+use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class MemberServiceProvider extends ServiceProvider
+class MemberServiceProvider extends PackageServiceProvider
 {
     protected string $moduleName = 'Member';
 
     protected string $moduleNameLower = 'member';
+
+    public function configurePackage(Package $package): void
+    {
+        $package->name($this->moduleName);
+    }
 
     /**
      * Boot the application events.
@@ -18,6 +24,8 @@ class MemberServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->extendValidator();
+
+        parent::boot();
     }
 
     /**
@@ -26,6 +34,8 @@ class MemberServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
+
+        parent::register();
     }
 
     /**
