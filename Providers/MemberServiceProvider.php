@@ -58,7 +58,7 @@ class MemberServiceProvider extends PackageServiceProvider
             'auth.providers.members' => [
                 'driver' => 'eloquent',
                 'model' => \Modules\Member\Models\Member::class,
-            ]
+            ],
         ]);
     }
 
