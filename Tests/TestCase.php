@@ -83,19 +83,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'prefix' => '',
         ]);
 
-        config()->set('auth.guards.member.driver', 'jwt');
-
         config()->set('jwt.secret', 'dIZJCx68yDjilhuVQT9G1aBIqNE13wwqEdAyH7133NEDZHjlJGcbYmZ2SYx1OKNQ');
-
-        config()->set('auth.guards.member', [
-            'driver' => 'jwt',
-            'provider' => 'members',
-        ]);
-
-        config()->set('auth.providers.members', [
-            'driver' => 'eloquent',
-            'model' => \Modules\Member\Models\Member::class,
-        ]);
 
         $this->registerTestModulePath($app);
     }

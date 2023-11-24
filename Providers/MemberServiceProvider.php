@@ -34,6 +34,7 @@ class MemberServiceProvider extends PackageServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
+        $this->registerAuthConfig();
 
         parent::register();
     }
@@ -44,6 +45,21 @@ class MemberServiceProvider extends PackageServiceProvider
     public function provides(): array
     {
         return [];
+    }
+
+    protected function registerAuthConfig()
+    {
+        config()->set([
+            'auth.guards.member.driver' => 'jwt',
+            'auth.guards.member' => [
+                'driver' => 'jwt',
+                'provider' => 'members',
+            ],
+            'auth.providers.members' => [
+                'driver' => 'eloquent',
+                'model' => \Modules\Member\Models\Member::class,
+            ]
+        ]);
     }
 
     /**
