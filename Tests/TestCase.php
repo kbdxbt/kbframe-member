@@ -7,13 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use Jiannei\Response\Laravel\Providers\LaravelServiceProvider;
-use Modules\Common\Providers\CommonServiceProvider;
 use Modules\Member\Http\Controllers\Api\AuthController;
 use Modules\Member\Http\Controllers\Api\MemberController;
-use Modules\Member\Providers\MemberServiceProvider;
-use Nwidart\Modules\LaravelModulesServiceProvider;
-use PHPOpenSourceSaver\JWTAuth\Providers\LaravelServiceProvider as JwtServiceProvider;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -66,11 +61,11 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     protected function getPackageProviders($app): array
     {
         return [
-            LaravelModulesServiceProvider::class,
-            CommonServiceProvider::class,
-            MemberServiceProvider::class,
-            LaravelServiceProvider::class,
-            JwtServiceProvider::class,
+            \Nwidart\Modules\LaravelModulesServiceProvider::class,
+            \Modules\Common\Providers\CommonServiceProvider::class,
+            \Modules\Member\Providers\MemberServiceProvider::class,
+            \Jiannei\Response\Laravel\Providers\LaravelServiceProvider::class,
+            \PHPOpenSourceSaver\JWTAuth\Providers\LaravelServiceProvider::class,
         ];
     }
 
