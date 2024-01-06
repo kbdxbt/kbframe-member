@@ -21,9 +21,9 @@ class SendCodeService
     {
         $code = $this->generateCode($length);
 
-        $this->getCacheInstance()->put($this->getCacheKey(), $code, $ttl);
+        $this->getCache()->put($this->getCacheKey(), $code, $ttl);
 
-        if (! $this->getCacheInstance()->has($this->getCacheKey())) {
+        if (! $this->getCache()->has($this->getCacheKey())) {
             throw new BadRequestException('生成验证码错误');
         }
 
@@ -32,7 +32,7 @@ class SendCodeService
 
     public function get()
     {
-        return $this->getCacheInstance()->get($this->getCacheKey());
+        return $this->getCache()->get($this->getCacheKey());
     }
 
     public function throwIfLimit(): static
@@ -61,7 +61,7 @@ class SendCodeService
 
     public function clear(): void
     {
-        $this->getCacheInstance()->forget($this->getCacheKey());
+        $this->getCache()->forget($this->getCacheKey());
     }
 
     protected function generateCode($length): string
