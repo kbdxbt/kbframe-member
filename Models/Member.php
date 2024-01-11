@@ -13,8 +13,6 @@ class Member extends User implements JWTSubject
     use SerializeDate;
     use SoftDeletes;
 
-    protected $table = 'members';
-
     protected $hidden = [
         'password',
     ];
