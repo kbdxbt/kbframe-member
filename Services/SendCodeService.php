@@ -4,10 +4,11 @@ namespace Modules\Member\Services;
 
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Support\Facades\RateLimiter;
-use Modules\Common\Exceptions\BadRequestException;
-use Modules\Common\Support\Traits\Cacheable;
+use Modules\Core\Exceptions\BadRequestException;
+use Modules\Core\Services\BaseService;
+use Modules\Core\Support\Traits\Cacheable;
 
-class SendCodeService
+class SendCodeService extends BaseService
 {
     use Cacheable;
 

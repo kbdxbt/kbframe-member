@@ -25,9 +25,9 @@ return new class extends Migration
             $table->tinyInteger('source')->nullable();
             $table->string('mobile')->nullable();
             $table->integer('pid')->nullable();
-            $table->tinyInteger('is_real_auth')->nullable()->default(0)->comment(\Modules\Common\Enums\BooleanEnum::allToDatabaseNote('是否认证'));
-            $table->tinyInteger('is_bind_mobile')->nullable()->default(0)->comment(\Modules\Common\Enums\BooleanEnum::allToDatabaseNote('是否绑定手机'));
-            $table->status()->comment(\Modules\Common\Enums\StatusEnum::allToDatabaseNote('状态'));
+            $table->tinyInteger('is_real_auth')->nullable()->default(0)->comment(\Modules\Core\Enums\BooleanEnum::allToDatabaseNote('是否认证'));
+            $table->tinyInteger('is_bind_mobile')->nullable()->default(0)->comment(\Modules\Core\Enums\BooleanEnum::allToDatabaseNote('是否绑定手机'));
+            $table->status()->comment(\Modules\Core\Enums\StatusEnum::allToDatabaseNote('状态'));
             $table->extJson();
             $table->timestamps();
             $table->softDeletes();

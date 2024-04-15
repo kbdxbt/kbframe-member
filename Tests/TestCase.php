@@ -62,7 +62,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     {
         return [
             \Nwidart\Modules\LaravelModulesServiceProvider::class,
-            \Modules\Common\Providers\CommonServiceProvider::class,
+            \Modules\Core\Providers\CommonServiceProvider::class,
             \Modules\Member\Providers\MemberServiceProvider::class,
             \Jiannei\Response\Laravel\Providers\LaravelServiceProvider::class,
             \PHPOpenSourceSaver\JWTAuth\Providers\LaravelServiceProvider::class,

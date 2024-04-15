@@ -5,6 +5,7 @@ namespace Modules\Member\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Hash;
+use Modules\Core\Models\Concerns\Findable;
 use Modules\Core\Models\Concerns\SerializeDate;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
@@ -12,12 +13,17 @@ class Member extends User implements JWTSubject
 {
     use SerializeDate;
     use SoftDeletes;
+    use Findable;
 
     protected $hidden = [
         'password',
     ];
 
     protected $guarded = [];
+
+    protected $casts = [
+        'ext' => 'json'
+    ];
 
     /**
      * 密码加密
