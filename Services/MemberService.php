@@ -28,7 +28,7 @@ class MemberService extends BaseService
             'status' => StatusEnum::ENABLED,
         ]);
 
-        if (!$result) {
+        if (! $result) {
             throw new BadRequestException('创建用户失败');
         }
     }
@@ -36,18 +36,18 @@ class MemberService extends BaseService
     public function login($username, $password, $extra = [])
     {
         $member = $this->repository->findByField('username', $username);
-        if (!$member) {
+        if (! $member) {
             throw new BadRequestException('账号未注册');
         }
 
         $ttl = config('jwt.ttl');
-        if (!empty($extra['remember_me'])) {
+        if (! empty($extra['remember_me'])) {
             $ttl = config('jwt.remember_ttl');
         }
 
         $token = $this->auth->setTTL($ttl)->attempt(compact('username', 'password'));
 
-        if (!$token) {
+        if (! $token) {
             throw new BadRequestException('账号或密码错误');
         }
 
@@ -61,7 +61,7 @@ class MemberService extends BaseService
     public function getDetail($id)
     {
         $data = $this->repository->query()->find($id);
-        if (!$data) {
+        if (! $data) {
             throw new BadRequestException('获取数据失败');
         }
 
@@ -81,7 +81,7 @@ class MemberService extends BaseService
     public function sendAuthCode($params): string
     {
         // 生成验证码
-        $code = SendCodeService::make('member:' . $params['username'])->throwIfLimit()->generate();
+        $code = SendCodeService::make('member:'.$params['username'])->throwIfLimit()->generate();
 
         if ($params['type'] == 'mail') {
             // 发送验证码
@@ -89,7 +89,7 @@ class MemberService extends BaseService
                 ->from(config('mail.from.address'))
                 ->to($params['username'])
                 ->subject('验证码邮件')
-                ->text('您的验证码为：' . $code);
+                ->text('您的验证码为：'.$code);
         }
 
         return $code;
@@ -99,13 +99,13 @@ class MemberService extends BaseService
     {
         $member = $this->repository->query()->firstWhere([
             'id' => request()->userId(),
-            'status' => StatusEnum::ENABLED->value
+            'status' => StatusEnum::ENABLED->value,
         ]);
 
-        if (!$member) {
+        if (! $member) {
             throw new BadRequestException('获取账号信息失败');
         }
-        if (!password_verify($params['old_password'], $member->password)) {
+        if (! password_verify($params['old_password'], $member->password)) {
             throw new BadRequestException('旧密码错误');
         }
         if (password_verify($params['new_password'], $member->password)) {
@@ -113,7 +113,7 @@ class MemberService extends BaseService
         }
 
         $member->password = $params['new_password'];
-        if (!$member->save()) {
+        if (! $member->save()) {
             throw new BadRequestException('修改密码失败');
         }
 

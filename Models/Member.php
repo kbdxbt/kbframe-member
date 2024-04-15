@@ -11,9 +11,9 @@ use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 class Member extends User implements JWTSubject
 {
+    use Findable;
     use SerializeDate;
     use SoftDeletes;
-    use Findable;
 
     protected $hidden = [
         'password',
@@ -22,7 +22,7 @@ class Member extends User implements JWTSubject
     protected $guarded = [];
 
     protected $casts = [
-        'ext' => 'json'
+        'ext' => 'json',
     ];
 
     /**

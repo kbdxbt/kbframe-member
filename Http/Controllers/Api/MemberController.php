@@ -2,7 +2,6 @@
 
 namespace Modules\Member\Http\Controllers\Api;
 
-use Modules\Core\Enums\StatusEnum;
 use Modules\Core\Http\Controllers\BaseController;
 use Modules\Member\Http\Requests\MemberRequest;
 use Modules\Member\Http\Resources\MemberResource;
