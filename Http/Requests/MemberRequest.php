@@ -11,19 +11,22 @@ class MemberRequest extends BaseRequest
         return true;
     }
 
-    public function updatePasswordRules(): array
+    public function updateRules(): array
     {
         return [
-            'old_password' => ['required'],
-            'new_password' => ['required', 'between:6,18'],
+            'action' => ['required', 'in:update_pwd'],
+            'old_password' => ['required_if:action,update_pwd'],
+            'new_password' => ['required_if:action,update_pwd', 'between:6,18'],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'old_password.required' => '请输入旧密码',
-            'new_password.required' => '请填写密码',
+            'action.required' => '请选择操作',
+            'action.in' => '操作有误',
+            'old_password.required_if' => '请输入旧密码',
+            'new_password.required_if' => '请填写密码',
             'new_password.between' => '密码必须介于6-18个字符之间',
         ];
     }

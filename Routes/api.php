@@ -18,8 +18,8 @@ Route::prefix('v1')->middleware(['api'])->group(function () {
         ->controller(MemberController::class)
         ->name('member.')
         ->middleware(['auth:member'])->group(function () {
-            Route::get('info', 'info')->name('info');
-            Route::post('update_password', 'updatePassword')->name('update_password');
+            Route::get('detail', 'detail')->name('detail');
+            Route::post('update', 'update')->name('update');
         });
 
 });

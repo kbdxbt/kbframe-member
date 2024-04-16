@@ -16,14 +16,16 @@ class MemberController extends BaseController
         $this->service = $service;
     }
 
-    public function info(MemberRequest $request)
+    public function detail(MemberRequest $request)
     {
         return $this->success(MemberResource::make($this->service->getDetail($request->userId())));
     }
 
-    public function updatePassword(MemberRequest $request)
+    public function update(MemberRequest $request)
     {
-        $this->service->updatePassword($request->validated());
+        if ($request->action == 'update_pwd') {
+            $this->service->updatePassword($request->validated());
+        }
 
         return $this->ok();
     }
