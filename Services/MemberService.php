@@ -35,7 +35,7 @@ class MemberService extends BaseService
 
     public function login($username, $password, $extra = [])
     {
-        $member = $this->repository->findByField('username', $username);
+        $member = $this->repository->query()->where('username', $username)->first();
         if (! $member) {
             throw new BadRequestException('账号未注册');
         }
