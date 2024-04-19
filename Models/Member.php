@@ -32,14 +32,6 @@ class Member extends User implements JWTSubject
     }
 
     /**
-     * @param  mixed  $username
-     */
-    public static function findByUsername($username): mixed
-    {
-        return self::query()->where('username', $username)->first();
-    }
-
-    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      */
     public function getJWTIdentifier(): mixed

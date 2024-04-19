@@ -4,7 +4,6 @@ namespace Modules\Member\Http\Requests;
 
 use Illuminate\Validation\Rule;
 use Modules\Core\Http\Requests\BaseRequest;
-use Modules\Member\Models\Member;
 
 class AuthRequest extends BaseRequest
 {

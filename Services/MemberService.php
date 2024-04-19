@@ -5,7 +5,6 @@ namespace Modules\Member\Services;
 use Modules\Core\Enums\StatusEnum;
 use Modules\Core\Exceptions\BadRequestException;
 use Modules\Core\Services\BaseService;
-use Modules\Member\Models\Member;
 use Modules\Member\Repositories\MemberRepostitory;
 
 class MemberService extends BaseService
