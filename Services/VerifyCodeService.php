@@ -8,7 +8,7 @@ use Modules\Core\Exceptions\BadRequestException;
 use Modules\Core\Services\BaseService;
 use Modules\Core\Support\Traits\Cacheable;
 
-class SendCodeService extends BaseService
+class VerifyCodeService extends BaseService
 {
     use Cacheable;
 
@@ -20,11 +20,11 @@ class SendCodeService extends BaseService
 
     public function generate($length = 6, $ttl = 600): string
     {
-        $code = $this->generateCode($length);
+        $code = generate_random('numeric', $length);
 
-        $this->getCache()->put($this->getCacheKey(), $code, $ttl);
+        self::getCacheInstance()->put($this->getCacheKey(), $code, $ttl);
 
-        if (! $this->getCache()->has($this->getCacheKey())) {
+        if (! self::getCacheInstance()->has($this->getCacheKey())) {
             throw new BadRequestException('生成验证码错误');
         }
 
@@ -33,7 +33,7 @@ class SendCodeService extends BaseService
 
     public function get()
     {
-        return $this->getCache()->get($this->getCacheKey());
+        return self::getCacheInstance()->get($this->getCacheKey());
     }
 
     public function throwIfLimit(): static
@@ -54,19 +54,9 @@ class SendCodeService extends BaseService
         }
 
         if ($is_clear) {
-            $this->clear();
+            self::getCacheInstance()->forget($this->getCacheKey());
         }
 
         return true;
-    }
-
-    public function clear(): void
-    {
-        $this->getCache()->forget($this->getCacheKey());
-    }
-
-    protected function generateCode($length): string
-    {
-        return generate_random('numeric', $length);
     }
 }

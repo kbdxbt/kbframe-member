@@ -3,7 +3,7 @@
 namespace Modules\Member\Providers;
 
 use Illuminate\Support\Facades\Validator;
-use Modules\Member\Services\SendCodeService;
+use Modules\Member\Services\VerifyCodeService;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -73,7 +73,7 @@ class MemberServiceProvider extends PackageServiceProvider
             $parameters,
             \Illuminate\Validation\Validator $validator
         ) {
-            return (new SendCodeService('member:'.request()->get('username')))->check($value, true)
+            return VerifyCodeService::make('member:'.request()->get('username'))->check($value, true)
                 || ! app()->isProduction();
         }, '验证码有误');
     }

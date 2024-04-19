@@ -81,7 +81,7 @@ class MemberService extends BaseService
     public function sendAuthCode($params): string
     {
         // 生成验证码
-        $code = SendCodeService::make('member:'.$params['username'])->throwIfLimit()->generate();
+        $code = VerifyCodeService::make('member:'.$params['username'])->throwIfLimit()->generate();
 
         if ($params['type'] == 'mail') {
             // 发送验证码
