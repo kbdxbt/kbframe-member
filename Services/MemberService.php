@@ -19,7 +19,7 @@ class MemberService extends BaseService
         $this->auth = auth('member');
     }
 
-    public function createMember($params): void
+    public function create($params): void
     {
         $result = $this->repository->create([
             'username' => $params['username'],

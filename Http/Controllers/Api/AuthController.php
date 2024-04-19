@@ -20,7 +20,7 @@ class AuthController extends BaseController
     {
         $params = $request->validated();
 
-        $this->service->createMember($params);
+        $this->service->create($params);
 
         $token = $this->service->login($params['username'], $params['password']);
 
