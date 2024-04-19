@@ -53,7 +53,6 @@ class AuthRequest extends BaseRequest
                 'required',
                 Rule::when(fn ($attribute) => $attribute->get('type') === 'sms', ['phone']),
                 Rule::when(fn ($attribute) => $attribute->get('type') === 'mail', ['email']),
-                $this->checkAccountReg(),
             ],
             'agree' => ['accepted'],
             'way' => ['required', Rule::in(['1', '2'])],
@@ -82,22 +81,5 @@ class AuthRequest extends BaseRequest
             'way.required' => '请选择方式',
             'way.in' => '选择方式有误',
         ];
-    }
-
-    /**
-     * 检查账号是否注册
-     */
-    public function checkAccountReg(): \Closure
-    {
-        return function ($attribute, $value, $fail): void {
-            $way = $this->request->get('way');
-            $member = Member::query()->where('username', $value)->first();
-            if ($way === 1 && $member) {
-                $fail('账号已被注册');
-            }
-            if ($way === 2 && ! $member) {
-                $fail('账号未注册');
-            }
-        };
     }
 }

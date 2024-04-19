@@ -5,6 +5,7 @@ namespace Modules\Member\Services;
 use Modules\Core\Enums\StatusEnum;
 use Modules\Core\Exceptions\BadRequestException;
 use Modules\Core\Services\BaseService;
+use Modules\Member\Models\Member;
 use Modules\Member\Repositories\MemberRepostitory;
 
 class MemberService extends BaseService
@@ -80,6 +81,8 @@ class MemberService extends BaseService
 
     public function sendAuthCode($params): string
     {
+        $this->checkAccountReg($params['username'], $params['way']);
+
         // 生成验证码
         $code = VerifyCodeService::make('member:'.$params['username'])->throwIfLimit()->generate();
 
@@ -118,5 +121,17 @@ class MemberService extends BaseService
         }
 
         $this->logout();
+    }
+
+    public function checkAccountReg($username, $way): void
+    {
+        $member = $this->repository->query()->firstWhere(['username' => $username]);
+
+        if ($way == 1 && $member) {
+            throw new BadRequestException('账号已被注册');
+        }
+        if ($way == 2 && ! $member) {
+            throw new BadRequestException('账号未注册');
+        }
     }
 }
