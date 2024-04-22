@@ -20,7 +20,7 @@ class AuthController extends BaseController
     {
         $params = $request->validated();
 
-        $this->service->create($params);
+        $this->service->createMember($params);
 
         $token = $this->service->login($params['username'], $params['password']);
 
@@ -38,7 +38,7 @@ class AuthController extends BaseController
 
     public function refresh()
     {
-        return $this->success(Member::wrapToken($this->service->refresh()));
+        return $this->success(Member::wrapToken($this->service->refreshToken()));
     }
 
     public function logout()
