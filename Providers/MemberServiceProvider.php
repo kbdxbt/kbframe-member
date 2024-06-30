@@ -4,6 +4,7 @@ namespace Modules\Member\Providers;
 
 use Illuminate\Support\Facades\Validator;
 use Modules\Member\Services\VerifyCodeService;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -24,6 +25,7 @@ class MemberServiceProvider extends PackageServiceProvider
     public function boot(): void
     {
         $this->extendValidator();
+        $this->setLoaclAutoLogin();
 
         parent::boot();
     }
@@ -73,8 +75,17 @@ class MemberServiceProvider extends PackageServiceProvider
             $parameters,
             \Illuminate\Validation\Validator $validator
         ) {
-            return VerifyCodeService::make('member:'.request()->get('username'))->check($value, true)
-                || ! app()->isProduction();
+            return VerifyCodeService::make('member:' . request()->get('username'))->check($value, true)
+                || !app()->isProduction();
         }, '验证码有误');
+    }
+
+    public function setLoaclAutoLogin(): void
+    {
+        if (!app()->isProduction() && !request()->hasHeader('Authorization')) {
+            $member = Member::query()->first();
+
+            $member && request()->headers->set('Authorization', 'Bearer ' . JWTAuth::fromUser($member));
+        }
     }
 }

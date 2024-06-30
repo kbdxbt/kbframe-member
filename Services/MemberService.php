@@ -21,16 +21,12 @@ class MemberService extends BaseService
 
     public function createMember($params): void
     {
-        $result = $this->repository->create([
+        $this->repository->create([
             'username' => $params['username'],
             'password' => $params['password'],
             'mobile' => $params['type'] === 'sms' ? $params['username'] : '',
             'status' => StatusEnum::ENABLED,
         ]);
-
-        if (! $result) {
-            throw new BadRequestException('创建用户失败');
-        }
     }
 
     public function login($username, $password, $extra = [])
