@@ -18,7 +18,7 @@ class AuthController extends BaseController
 
     public function register(AuthRequest $request)
     {
-        $params = $request->validated();
+        $params = $request->validateInput();
 
         $this->service->createMember($params);
 
@@ -29,7 +29,7 @@ class AuthController extends BaseController
 
     public function login(AuthRequest $request)
     {
-        $params = $request->validated();
+        $params = $request->validateInput();
 
         $token = $this->service->login($params['username'], $params['password']);
 
@@ -50,6 +50,6 @@ class AuthController extends BaseController
 
     public function sendCode(AuthRequest $request)
     {
-        return $this->success(['code' => $this->service->sendAuthCode($request->validated())]);
+        return $this->success(['code' => $this->service->sendAuthCode($request->validateInput())]);
     }
 }

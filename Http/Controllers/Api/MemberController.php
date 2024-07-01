@@ -24,7 +24,7 @@ class MemberController extends BaseController
     public function update(MemberRequest $request)
     {
         if ($request->action == 'update_pwd') {
-            $this->service->updatePassword($request->validated());
+            $this->service->updatePassword($request->validateInput());
         }
 
         return $this->ok();

@@ -3,6 +3,7 @@
 namespace Modules\Member\Providers;
 
 use Illuminate\Support\Facades\Validator;
+use Modules\Member\Models\Member;
 use Modules\Member\Services\VerifyCodeService;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 use Spatie\LaravelPackageTools\Package;
@@ -59,7 +60,7 @@ class MemberServiceProvider extends PackageServiceProvider
             ],
             'auth.providers.members' => [
                 'driver' => 'eloquent',
-                'model' => \Modules\Member\Models\Member::class,
+                'model' => Member::class,
             ],
         ]);
     }
