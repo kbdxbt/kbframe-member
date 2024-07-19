@@ -9,22 +9,21 @@ use Modules\Member\Services\MemberService;
 
 class MemberController extends BaseController
 {
-    protected MemberService $service;
-
-    public function __construct(MemberService $service)
+    public function __construct(MemberRequest $request, MemberService $service)
     {
+        $this->request = $request;
         $this->service = $service;
     }
 
-    public function detail(MemberRequest $request)
+    public function detail()
     {
-        return $this->success(MemberResource::make($this->service->getDetail($request->userId())));
+        return $this->success(MemberResource::make($this->service->getDetail($this->request->userId())));
     }
 
-    public function update(MemberRequest $request)
+    public function update()
     {
-        if ($request->action == 'update_pwd') {
-            $this->service->updatePassword($request->validateInput());
+        if ($this->request->input('_action') == 'update_pwd') {
+            $this->service->updatePassword($this->request->validateInput());
         }
 
         return $this->ok();

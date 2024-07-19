@@ -9,16 +9,15 @@ use Modules\Member\Services\MemberService;
 
 class AuthController extends BaseController
 {
-    protected MemberService $service;
-
-    public function __construct(MemberService $service)
+    public function __construct(AuthRequest $request, MemberService $service)
     {
+        $this->request = $request;
         $this->service = $service;
     }
 
-    public function register(AuthRequest $request)
+    public function register()
     {
-        $params = $request->validateInput();
+        $params = $this->request->validateInput();
 
         $this->service->createMember($params);
 
@@ -27,9 +26,9 @@ class AuthController extends BaseController
         return $this->success(Member::wrapToken($token));
     }
 
-    public function login(AuthRequest $request)
+    public function login()
     {
-        $params = $request->validateInput();
+        $params = $this->request->validateInput();
 
         $token = $this->service->login($params['username'], $params['password']);
 
@@ -48,8 +47,8 @@ class AuthController extends BaseController
         return $this->ok();
     }
 
-    public function sendCode(AuthRequest $request)
+    public function sendCode()
     {
-        return $this->success(['code' => $this->service->sendAuthCode($request->validateInput())]);
+        return $this->success(['code' => $this->service->sendAuthCode($this->request->validateInput())]);
     }
 }
