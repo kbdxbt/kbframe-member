@@ -2,10 +2,14 @@
 
 namespace Modules\Member\Services;
 
+use Illuminate\Support\Facades\Auth;
 use Modules\Core\Enums\StatusEnum;
 use Modules\Core\Exceptions\BadRequestException;
 use Modules\Core\Services\BaseService;
 use Modules\Member\Repositories\MemberRepostitory;
+use Modules\System\Enums\Message\ChannelEnum;
+use Modules\System\Enums\Message\TypeEnum;
+use Modules\System\Services\MessageService;
 
 class MemberService extends BaseService
 {
@@ -76,19 +80,23 @@ class MemberService extends BaseService
 
     public function sendAuthCode($params): string
     {
-        $this->checkAccountReg($params['username'], $params['way']);
+        $member = $this->checkAccountReg($params['username'], $params['way']);
 
-        // 生成验证码
         $code = VerifyCodeService::make('member:'.$params['username'])->throwIfLimit()->generate();
 
-        if ($params['type'] == 'mail') {
-            // 发送验证码
-            \Guanguans\Notify\Messages\EmailMessage::create()
-                ->from(config('mail.from.address'))
-                ->to($params['username'])
-                ->subject('验证码邮件')
-                ->text('您的验证码为：'.$code);
-        }
+        app(MessageService::class)->send([
+            'recipient_id' => $member['id'],
+            'type' => TypeEnum::VERIFY_CODE->value,
+            'channel' => ChannelEnum::MAIL->value,
+            'subject' => '验证码邮件',
+            'content' => '您的验证码为：'.$code,
+            'options' => [
+                'option' => [
+                    'to' => $params['username'],
+                    'from' => config('mail.from.address')
+                ]
+            ]
+        ]);
 
         return $code;
     }
@@ -118,7 +126,7 @@ class MemberService extends BaseService
         $this->logout();
     }
 
-    public function checkAccountReg($username, $way): void
+    public function checkAccountReg($username, $way): \Illuminate\Database\Eloquent\Model
     {
         $member = $this->repository->query()->firstWhere(['username' => $username]);
 
@@ -128,5 +136,7 @@ class MemberService extends BaseService
         if ($way == 2 && ! $member) {
             throw new BadRequestException('账号未注册');
         }
+
+        return $member;
     }
 }
