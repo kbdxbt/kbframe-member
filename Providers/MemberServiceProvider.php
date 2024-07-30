@@ -76,7 +76,7 @@ class MemberServiceProvider extends PackageServiceProvider
             $parameters,
             \Illuminate\Validation\Validator $validator
         ) {
-            return VerifyCodeService::make('member:' . request()->get('username'))->check($value, true)
+            return VerifyCodeService::make('member:' . request()->get('username'))->checkCode($value, true)
                 || !app()->isProduction();
         }, '验证码有误');
     }

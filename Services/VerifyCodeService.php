@@ -31,7 +31,7 @@ class VerifyCodeService extends BaseService
         return $code;
     }
 
-    public function get()
+    public function getCode()
     {
         return self::getCacheInstance()->get($this->getCacheKey());
     }
@@ -47,13 +47,13 @@ class VerifyCodeService extends BaseService
         return $this;
     }
 
-    public function check($code, $is_clear = false): bool
+    public function checkCode($code, $isClear = false): bool
     {
-        if ($code !== $this->get()) {
+        if ($code !== $this->getCode()) {
             return false;
         }
 
-        if ($is_clear) {
+        if ($isClear) {
             self::getCacheInstance()->forget($this->getCacheKey());
         }
 
