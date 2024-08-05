@@ -84,7 +84,7 @@ class MemberService extends BaseService
 
         $code = VerifyCodeService::make('member:'.$params['username'])->throwIfLimit()->generate();
 
-        app(MessageService::class)->send([
+        MessageService::instance()->send([
             'recipient_id' => $member['id'],
             'type' => TypeEnum::VERIFY_CODE->value,
             'channel' => ChannelEnum::MAIL->value,
