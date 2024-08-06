@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Modules\Core\Enums\StatusEnum;
 use Modules\Core\Exceptions\BadRequestException;
 use Modules\Core\Services\BaseService;
+use Modules\Core\Support\Traits\ActionServiceTrait;
 use Modules\Member\Repositories\MemberRepostitory;
 use Modules\System\Enums\Message\ChannelEnum;
 use Modules\System\Enums\Message\TypeEnum;
@@ -13,7 +14,9 @@ use Modules\System\Services\MessageService;
 
 class MemberService extends BaseService
 {
-    protected MemberRepostitory $repository;
+    use ActionServiceTrait;
+
+    protected $repository;
 
     protected $auth;
 
@@ -23,9 +26,11 @@ class MemberService extends BaseService
         $this->auth = auth('member');
     }
 
-    public function createMember($params): void
+    public function saveData($params): void
     {
-        $this->repository->create([
+        $this->repository->updateOrInsert([
+            'id' => $params['id'] ?? 0
+        ], [
             'username' => $params['username'],
             'password' => $params['password'],
             'mobile' => $params['type'] === 'sms' ? $params['username'] : '',
@@ -56,16 +61,6 @@ class MemberService extends BaseService
         }
 
         return $token;
-    }
-
-    public function getDetail($id)
-    {
-        $data = $this->repository->query()->find($id);
-        if (! $data) {
-            throw new BadRequestException('获取数据失败');
-        }
-
-        return $data;
     }
 
     public function refreshToken()
