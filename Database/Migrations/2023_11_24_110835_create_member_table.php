@@ -14,11 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('members', function (Blueprint $table) {
+            $table->engine = 'Innodb';
             $table->comment('会员表');
-            $table->id();
-            $table->string('username');
+            $table->id()->comment('主键');
+            $table->string('username')->nullable();
             $table->string('nickname')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->string('auth_key')->nullable();
             $table->string('remember_token')->nullable();
             $table->tinyInteger('type')->nullable();
